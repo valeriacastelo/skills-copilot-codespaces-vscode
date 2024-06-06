@@ -1,36 +1,46 @@
-//Create a web server 
-//Add a POST route to add a comment
-//Add a GET route to get all comments
+// Create web server 
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const fs = require('fs');
 
-//Import the express module
-//const express = require('express');
+// Use body parser
+app.use(bodyParser.json());
 
-//Create an instance of express
-//const app = express();
+// Use the static files
+app.use(express.static('public'));
 
-//Middleware
-//app.use(express.json());
+// Get comments
+app.get('/comments', (req, res) => {
+    fs.readFile('comments.json', (err, data) => {
+        if (err) {
+            res.send('[]');
+        } else {
+            res.send(data);
+        }
+    });
+});
 
-//Array to hold comments
-//const comments = [];
+// Add comment
+app.post('/comments', (req, res) => {
+    fs.readFile('comments.json', (err, data) => {
+        if (err) {
+            res.send('[]');
+        } else {
+            const comments = JSON.parse(data);
+            comments.push(req.body);
+            fs.writeFile('comments.json', JSON.stringify(comments, null, 2), (err) => {
+                if (err) {
+                    res.send('[]');
+                } else {
+                    res.send('Comment added!');
+                }
+            });
+        }
+    });
+});
 
-//POST route to add a comment
-//app.post('/comments', (req, res) => {
-    //Get the comment from the request body
-    //const comment = req.body.comment;
-    //Add the comment to the comments array
-    //comments.push(comment);
-    //Send a response
-    //res.send('Comment added');
-//});
-
-//GET route to get all comments
-//app.get('/comments', (req, res) => {
-    //Send the comments array as a response
-    //res.send(comments);
-//});
-
-//Start the server
-//app.listen(3000, () => {
-    //console.log('Server running on port 3000');
-//});
+// Start the server
+app.listen(3000, () => {
+    console.log('Server started on http://localhost:3000');
+});
