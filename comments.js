@@ -1,62 +1,23 @@
-//Create a web server for comments 
-
-//require express
+//Create a web server 
 const express = require('express');
 const app = express();
 const port = 3000;
 
-//require body-parser
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+//Create a variable to store the comments
+let comments = [];
 
-//require the comments module
-const comments = require('./comments.js');
-
-//GET /comments - returns a JSON array of comments
-app.get('/comments', (req, res) => {
-    res.json(comments.getComments());
-});
-
-//POST /comments - creates a new comment
+//Create a POST route to add comments
 app.post('/comments', (req, res) => {
-    const { comment } = req.body;
-    comments.addComment(comment);
-    res.status(201).json(comment);
+    comments.push(req.body.comment);
+    res.send('Comment added');
 });
 
-//GET /comments/:id - returns a single comment with the id
-app.get('/comments/:id', (req, res) => {
-    const id = req.params.id;
-    const comment = comments.getComment(id);
-    if (comment) {
-        res.json(comment);
-    } else {
-        res.status(404).json({ error: 'Comment not found' });
-    }
+//Create a GET route to retrieve comments
+app.get('/comments', (req, res) => {
+    res.send(comments);
 });
 
-//PUT /comments/:id - updates a single comment with the id
-app.put('/comments/:id', (req, res) => {
-    const id = req.params.id;
-    const { comment } = req.body;
-    if (comments.updateComment(id, comment)) {
-        res.json(comment);
-    } else {
-        res.status(404).json({ error: 'Comment not found' });
-    }
-});
-
-//DELETE /comments/:id - deletes a single comment with the id
-app.delete('/comments/:id', (req, res) => {
-    const id = req.params.id;
-    if (comments.deleteComment(id)) {
-        res.json({ message: 'Comment deleted' });
-    } else {
-        res.status(404).json({ error: 'Comment not found' });
-    }
-});
-
-//start the server
+//Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server started on port ${port}`);
 });
