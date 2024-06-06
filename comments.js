@@ -1,23 +1,36 @@
 //Create a web server 
-const express = require('express');
-const app = express();
-const port = 3000;
+//Add a POST route to add a comment
+//Add a GET route to get all comments
 
-//Create a variable to store the comments
-let comments = [];
+//Import the express module
+//const express = require('express');
 
-//Create a POST route to add comments
-app.post('/comments', (req, res) => {
-    comments.push(req.body.comment);
-    res.send('Comment added');
-});
+//Create an instance of express
+//const app = express();
 
-//Create a GET route to retrieve comments
-app.get('/comments', (req, res) => {
-    res.send(comments);
-});
+//Middleware
+//app.use(express.json());
+
+//Array to hold comments
+//const comments = [];
+
+//POST route to add a comment
+//app.post('/comments', (req, res) => {
+    //Get the comment from the request body
+    //const comment = req.body.comment;
+    //Add the comment to the comments array
+    //comments.push(comment);
+    //Send a response
+    //res.send('Comment added');
+//});
+
+//GET route to get all comments
+//app.get('/comments', (req, res) => {
+    //Send the comments array as a response
+    //res.send(comments);
+//});
 
 //Start the server
-app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-});
+//app.listen(3000, () => {
+    //console.log('Server running on port 3000');
+//});
